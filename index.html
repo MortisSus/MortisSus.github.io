@@ -8,6 +8,9 @@
 </head>
 <body>
 
+  <!-- Аудиоэффект клика -->
+  <audio id="clickSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_8b94a0d5a4.mp3?filename=click-124467.mp3"></audio>
+
   <div id="login">
     <h2>Zadej heslo:</h2>
     <input type="password" id="passwordInput" />
@@ -22,10 +25,13 @@
 
   <div id="finalMessage" style="display: none;">
     🎉 Všeho Nejlepšího k narozkám! 🎉
+    <br />
+    <button id="resetButton" onclick="resetAll()">Znovu</button>
   </div>
 
   <script>
     let clickCount = 0;
+    let fireworksInterval = null;
 
     function checkPassword() {
       const password = document.getElementById('passwordInput').value;
@@ -39,6 +45,7 @@
 
     function handleClick() {
       clickCount++;
+      playClickSound();
       updateClickText();
       launchConfetti();
       if (clickCount >= 3) {
@@ -47,6 +54,12 @@
         launchConfetti(true);
         launchFireworks();
       }
+    }
+
+    function playClickSound() {
+      const sound = document.getElementById('clickSound');
+      sound.currentTime = 0;
+      sound.play();
     }
 
     function updateClickText() {
@@ -89,11 +102,12 @@
         return Math.random() * (max - min) + min;
       }
 
-      const interval = setInterval(function () {
+      fireworksInterval = setInterval(function () {
         const timeLeft = animationEnd - Date.now();
 
         if (timeLeft <= 0) {
-          clearInterval(interval);
+          clearInterval(fireworksInterval);
+          fireworksInterval = null;
           return;
         }
 
@@ -101,6 +115,19 @@
         confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
         confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
       }, 250);
+    }
+
+    function resetAll() {
+      clickCount = 0;
+      document.getElementById('finalMessage').style.display = "none";
+      document.getElementById('main').style.display = "block";
+      document.getElementById('clickText').textContent = "Klikni 3 Krát";
+      document.getElementById('clickText').style.opacity = 1;
+
+      if (fireworksInterval) {
+        clearInterval(fireworksInterval);
+        fireworksInterval = null;
+      }
     }
   </script>
 </body>
