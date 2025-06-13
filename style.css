@@ -28,7 +28,6 @@ html, body {
   transition: opacity 0.3s ease;
 }
 
-/* Эффект встряски для финального сообщения */
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
   20%, 60% { transform: translateX(-10px); }
@@ -39,7 +38,6 @@ html, body {
   animation: shake 0.5s ease-in-out 3;
 }
 
-/* Кнопки */
 button {
   padding: 15px 30px;
   font-size: 20px;
